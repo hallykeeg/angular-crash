@@ -19,10 +19,16 @@
       "reminder": true
     },
     {
-      "text": "Last Task",
-      "day": "Sunday",
+      "text": "Sport jog",
+      "day": "Monday 10th",
       "reminder": false,
       "id": 4
+    },
+    {
+      "text": "Sleep",
+      "day": "Sunday 6th",
+      "reminder": false,
+      "id": 5
     }
   ]
 }

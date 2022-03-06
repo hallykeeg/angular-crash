@@ -11,5 +11,5 @@
         <label for="reminder">Reminder</label>
         <input type="checkbox" name="reminder" id="reminder" [(ngModel)]="reminder" >
     </div>
-    <input (click)="saveTask()" type="submit" value="Save Task" class="btn btn-block">
+    <input (click)="saveTask()" type="submit" value="{{editTask ? 'Edit Task' : 'Add Task'}}" class="btn btn-block">
 </form>

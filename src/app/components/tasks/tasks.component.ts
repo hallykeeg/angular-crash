@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Output, EventEmitter } from '@angular/core';
 import { TaskService } from 'src/app/services/task.service';
+import { UiService } from 'src/app/services/ui.service';
 import { Task } from 'src/app/Task';
 
 @Component({
@@ -9,10 +10,11 @@ import { Task } from 'src/app/Task';
 })
 export class TasksComponent implements OnInit {
 
+  @Output() fillAddTask = new EventEmitter<Task>();
+
   tasks:Task[]=[];
 
-
-  constructor(private taskService:TaskService) { }
+  constructor(private taskService:TaskService,private uiService:UiService) { }
 
   ngOnInit(): void {
    this.taskService.getTasks().subscribe(tasks=>{
@@ -41,6 +43,22 @@ export class TasksComponent implements OnInit {
       this.tasks.push(t);
       
     });
+  }
+  editTask(task:Task){
+    this.taskService.updateTask(task).subscribe(
+      t =>{
+        this.tasks.map((tache,index)=>{
+          if(tache.id==t.id){
+            this.tasks[index]=t;
+          }
+        })
+      }
+    );
+  }
+
+  forwardEvent(task:Task){
+    
+    this.uiService.setTask(task);
   }
 
 }

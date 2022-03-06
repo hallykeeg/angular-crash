@@ -13,6 +13,8 @@ export class TaskItemComponent implements OnInit {
   
   @Input() task:Task={text:'',day:'',reminder:false};
   @Output() deleteEvent = new EventEmitter<Task>();
+  @Output() loadTaskEvent = new EventEmitter<Task>();
+
 
   @Output() dblClickEvent = new EventEmitter<Task>();
 
@@ -25,6 +27,10 @@ export class TaskItemComponent implements OnInit {
   }
   onDblClick(task:Task){
     this.dblClickEvent.emit(task);
+  }
+
+  loadTask(task:Task){
+    this.loadTaskEvent.emit(task);
   }
 
 }

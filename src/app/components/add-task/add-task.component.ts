@@ -12,14 +12,35 @@ import { Task
 export class AddTaskComponent implements OnInit {
 
   @Output() onSave: EventEmitter <Task> = new EventEmitter();
+  @Output() onEdit: EventEmitter <Task> = new EventEmitter();
+
   showAddTask:boolean=false;
-  suscription?:Subscription;
+  suscription!:Subscription;
+  suscriptionPopulate!:Subscription;
+
+  editTask:boolean = false;
+  suscriptionEdit!:Subscription;
+
+  id?:number;
   text:string="";
   day:string="";
+
+  label:string="Add Task";
+  editing:boolean=false;
+
   reminder : boolean=false;
 
   constructor(private uiService:UiService) { 
     this.suscription=this.uiService.onToggle().subscribe(value=>this.showAddTask=value);
+    this.suscriptionEdit=this.uiService.onToggleEdit().subscribe(value=>this.editTask=value);
+  
+    this.suscriptionPopulate=this.uiService.onEditTask().subscribe(t=>{
+      this.editing=true;
+      this.uiService.toggleAddTask();
+      this.uiService.toggleEditTask();
+      this.populate(t);
+    
+    });
   }
 
   ngOnInit(): void {
@@ -32,11 +53,27 @@ export class AddTaskComponent implements OnInit {
       day: this.day,
       reminder : this.reminder
     }
-    
-    this.onSave.emit(task);
+    if(this.editing){
+      task.id=this.id;
+      
+      this.onEdit.emit(task);
+    }else{
+      this.onSave.emit(task);
+
+    }
     this.text='';
     this.day='';
     this.reminder=false;
+    this.editing=false;
+    this.uiService.toggleAddTask();
+
+  }
+  populate(task:Task){
+    this.id=task.id;
+    this.text=task.text;
+    this.day=task.day;
+    this.reminder=task.reminder;
+   
   }
 
 }
